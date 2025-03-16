@@ -1,17 +1,15 @@
 // 引入官方元件
 import {createRouter, createWebHistory} from 'vue-router'  
 
-import manageRoutes from "./manage.js";
+import HomePage from "../views/HomePage.vue";
+import ManagePage from "../views/ManagePage.vue"; // 改名稱
 
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
-        {
-            path: '/',
-            name: 'home',
-            //redirect: '/manage' 
-        }
+        { path: "/", component: HomePage },
+        { path: "/manage", component: ManagePage }, // 這裡改成 /manage
     ]
 })
 
