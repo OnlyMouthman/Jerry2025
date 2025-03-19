@@ -1,37 +1,23 @@
 <template>
-    <div class="relative h-screen w-screen bg-gray-100">
-      <!-- Header -->
-      <Header :toggleSidebar="toggleSidebar" />
-      
-      <!-- Sidebar -->
-      <Sidebar :isOpen="isSidebarOpen" :closeSidebar="closeSidebar" />
-  
-      <!-- Main Content -->
-      <main class="pt-14 flex items-center justify-center h-[calc(100vh-56px)]">
-        <p class="text-center text-lg font-semibold">Home Page Content</p>
-      </main>
-    </div>
-  </template>
-  
-  <script>
-  import { ref } from "vue";
-  import Header from "../components/Header.vue";
-  import Sidebar from "../components/Sidebar.vue";
-  
-  export default {
-    components: { Header, Sidebar },
-    setup() {
-      const isSidebarOpen = ref(false);
-  
-      const toggleSidebar = () => {
-        isSidebarOpen.value = !isSidebarOpen.value;
-      };
-  
-      const closeSidebar = () => {
-        isSidebarOpen.value = false;
-      };
-  
-      return { isSidebarOpen, toggleSidebar, closeSidebar };
-    },
-  };
-  </script>
+  <BaseLayout>
+    <template #left>
+      <p>左側內容</p>
+    </template>
+
+    <template #center>
+      <p>這是 HomePage 的主要內容</p>
+    </template>
+
+    <template #right>
+      <p>右側內容</p>
+    </template>
+  </BaseLayout>
+</template>
+
+<script>
+import BaseLayout from "../components/BaseLayout.vue";
+
+export default {
+  components: { BaseLayout },
+};
+</script>
