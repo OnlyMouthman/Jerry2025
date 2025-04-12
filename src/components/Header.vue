@@ -15,7 +15,7 @@
         @click="handleClick"
         class="bg-blue-500 text-white px-4 py-2 rounded"
       >
-        使用 Google 登入
+        {{ $t('login') }}
       </button>
       <UserMenu v-else />
     </div>

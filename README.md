@@ -1,78 +1,102 @@
-# Vue 3 多頁面專案
+<h1 align="center">🌍 Jerry2025</h1>
+<p align="center">
+  Vue 3 + Vite + TailwindCSS + Firebase project with login, layout, i18n and modular UI.
+</p>
 
-## 📌 專案說明
+<p align="center">
+  <img src="https://img.shields.io/badge/vue-3.x-brightgreen.svg">
+  <img src="https://img.shields.io/badge/tailwind-v4-blue.svg">
+  <img src="https://img.shields.io/badge/firebase-auth-orange.svg">
+  <img src="https://img.shields.io/badge/pinia-store-yellow.svg">
+</p>
 
-本專案是一個使用 Vue 3 和 Tailwind CSS 建立的多頁面應用，包含 **首頁 (`/`)** 和 **管理頁面 (`/manage`)**，並提供不同的 **Header** 和 **Sidebar** 來對應不同的頁面需求。
+---
 
-## 📁 專案目錄結構
+## ✨ Features
+
+- 🔐 Google Sign-in via Firebase Authentication
+- 🌐 Language switcher with i18n (Traditional Chinese / English)
+- ⚡️ Vite + Vue 3 + Composition API
+- 🧩 Pinia-based user login state management
+- 🎨 TailwindCSS v4 utility-first design
+- 🧱 Reusable BaseLayout (Header + Sidebar + LanguageModal)
+- 🧭 Three-column layout design in HomePage
+- 💾 Persistent login via Firebase auth listener
+
+---
+
+## 📁 Project Structure
 
 ```
 src/
-│── components/
-│   ├── Header.vue           # 一般頁面的導航欄
-│   ├── Sidebar.vue          # 一般頁面的側邊欄
-│   ├── ManageHeader.vue     # 管理頁面的導航欄
-│   ├── ManageSidebar.vue    # 管理頁面的側邊欄
-│
-│── views/
-│   ├── HomePage.vue         # 首頁 `/`
-│   ├── ManagePage.vue       # 管理頁 `/manage`
-│
-│── router/
-│   ├── index.js             # Vue Router 設定
-│
-│── App.vue                  # Vue 入口文件（載入 router-view）
-│── main.js                  # Vue 應用的主要入口
+├── components/          # Common UI components (Header, Sidebar, etc.)
+├── layouts/             # BaseLayout.vue for page layout wrapper
+├── views/               # Page views (HomePage, ManagePage)
+├── stores/              # Pinia store (user state)
+├── composables/         # Reusable logic (e.g. useFirebaseAuth)
+├── locales/             # Language JSON files for i18n
+├── firebase.js          # Firebase config
+└── style.css            # TailwindCSS entry point
 ```
 
-## ⚙️ 安裝與執行
+---
 
-### 1. 安裝依賴
+## 🚀 Getting Started
 
-```sh
+```bash
+# 1. Install dependencies
 npm install
-```
 
-### 2. 啟動開發伺服器
-
-```sh
+# 2. Run development server
 npm run dev
 ```
 
-### 3. 編譯正式版
+> 💡 Make sure your Firebase project config is set in `src/firebase.js`
 
-```sh
-npm run build
+---
+
+## 🖼️ Layout Usage
+
+Wrap pages with `BaseLayout.vue` to use shared layout and UI:
+
+```vue
+<template>
+  <BaseLayout>
+    <main class="flex">
+      <!-- Your content here -->
+    </main>
+  </BaseLayout>
+</template>
 ```
 
-## 🚀 功能介紹
+---
 
-### 🏠 首頁 `/`
+## 🌍 i18n Language Switcher
 
-- 包含 `Header.vue` 和 `Sidebar.vue`
-- 點擊 **左上角按鈕** 可開啟/關閉 Sidebar
-- 點擊 **右上角用戶頭像** 可跳轉到 `/manage`
+- Available languages: 中文 / English
+- Change language via dropdown in header/sidebar
 
-### ⚙️ 管理頁面 `/manage`
+---
 
-- 使用 `ManageHeader.vue` 和 `ManageSidebar.vue`
-- 具有與首頁相同的結構，但功能可獨立擴展
-- 透過 `router.push("/manage")` 進入此頁面
+## 🧪 Build & Preview
 
-## 🛠️ 開發規則
+```bash
+npm run build     # Build for production
+npm run preview   # Preview production build
+```
 
-- `HomePage.vue` 和 `ManagePage.vue` 內的 `<main>` 統一使用：
-  ```html
-  <main class="pt-14 flex items-center justify-center h-[calc(100vh-56px)]">
-  ```
-- `Header.vue` 和 `Sidebar.vue` 只適用於 `/`
-- `ManageHeader.vue` 和 `ManageSidebar.vue` 只適用於 `/manage`
-- `App.vue` 只負責載入 `<router-view />`，不直接處理 `Header` 或 `Sidebar`
+---
 
-## 📌 版本與技術
+## 📸 Screenshots
 
-- Vue 3 + Composition API
-- Vue Router
-- Tailwind CSS 3
+> (You can add screenshots of your layout and login interface here for demo)
 
-## 📝 TODO
+---
+
+## 📜 License
+
+MIT License © 2025-present
+
+---
+
+Made with ❤️ by Jerry2025 Team

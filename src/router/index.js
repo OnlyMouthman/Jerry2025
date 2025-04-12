@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomePage from '@/views/HomePage.vue'
 import ManagePage from '@/views/ManagePage.vue'
-import LoginPage from '@/views/LoginPage.vue'
+import LoginPage from '@/views/auth/LoginPage.vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 const routes = [

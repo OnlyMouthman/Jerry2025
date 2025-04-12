@@ -1,47 +1,29 @@
 <template>
-  <header class="fixed top-0 left-0 w-full h-14 bg-white shadow-md flex items-center justify-between px-4">
-    <!-- 左側按鈕（開啟 Sidebar） -->
-    <button @click="toggleSidebar" class="p-2 rounded-lg hover:bg-gray-200">
-      <i class="material-icons text-2xl">menu</i>
-    </button>
+  <div class="relative h-screen w-screen bg-gray-100">
+    <ManageHeader :toggleSidebar="toggleSidebar" />
+    <ManageSidebar :isOpen="isSidebarOpen" :closeSidebar="closeSidebar" @showLang="langModal?.open()" />
+    <LanguageModal ref="langModal" />
 
-    <!-- 標題 -->
-    <h1 class="text-lg font-semibold">管理後台</h1>
-
-    <!-- 右側功能 -->
-    <div>
-      <UserMenu v-if="userStore.user" />
-      <button
-        v-else
-        @click="handleClick"
-        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        使用 Google 登入
-      </button>
-    </div>
-  </header>
+    <main class="pt-14 flex items-center justify-center h-[calc(100vh-56px)]">
+      <p class="text-center text-lg font-semibold">Manage Page Content</p>
+    </main>
+  </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/user'
-import { auth, provider, signInWithPopup } from '@/firebase'
-import UserMenu from '../components/UserMenu.vue'
+import { ref } from 'vue'
+import ManageHeader from '@/components/ManageHeader.vue'
+import ManageSidebar from '@/components/ManageSidebar.vue'
+import LanguageModal from '@/components/LanguageModal.vue'
 
-defineProps({
-  toggleSidebar: Function
-})
+const isSidebarOpen = ref(false)
+const langModal = ref(null)
 
-const userStore = useUserStore()
-const router = useRouter()
+const toggleSidebar = () => {
+  isSidebarOpen.value = !isSidebarOpen.value
+}
 
-const handleClick = async () => {
-  try {
-    const result = await signInWithPopup(auth, provider)
-    userStore.user = result.user
-    // 可視情況保留 router.push('/') 或 stay on /manage
-  } catch (error) {
-    console.error('登入失敗', error)
-  }
+const closeSidebar = () => {
+  isSidebarOpen.value = false
 }
 </script>

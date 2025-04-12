@@ -6,19 +6,18 @@
     </button>
 
     <!-- 標題 -->
-    <h1 class="text-lg font-semibold">My App</h1>
+    <h1 class="text-lg font-semibold">{{ $t('appTitle') }}</h1>
 
     <!-- 使用者功能選單 -->
-    <UserMenu v-if="user" />
+    <UserMenu v-if="userStore.user" />
   </header>
 </template>
 
 <script setup>
-defineProps(["toggleSidebar"])
-const user = ref(null)
-
-import { ref, defineProps } from 'vue'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { defineProps } from 'vue'
+import { useUserStore } from '@/stores/user'
 import UserMenu from './UserMenu.vue'
 
-
+const props = defineProps(['toggleSidebar'])
+const userStore = useUserStore()
+</script>

@@ -1,11 +1,11 @@
 <template>
   <div class="relative flex items-center space-x-3" ref="menuContainer">
-    <!-- 左側按鈕：前往後台 / 回到前台 -->
+    <!-- 左側按鈕：{{ $t('goToManage') }} / {{ $t('goToFrontend') }} -->
     <button
       @click="goToOtherPage"
       class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
     >
-      {{ currentPath === '/' ? '前往後台' : '回到前台' }}
+      {{ currentPath === '/' ? $t('goToManage') : $t('goToFrontend') }}
     </button>
 
     <!-- 使用者頭像 + 下拉選單 -->
@@ -21,13 +21,13 @@
         class="absolute right-0 mt-2 w-32 bg-white border rounded shadow z-50"
       >
         <ul class="text-sm">
-          <li class="hover:bg-gray-100 px-4 py-2 cursor-pointer">功能一</li>
-          <li class="hover:bg-gray-100 px-4 py-2 cursor-pointer">功能二</li>
+          <li class="hover:bg-gray-100 px-4 py-2 cursor-pointer">{{ $t('feature1') }}</li>
+          <li class="hover:bg-gray-100 px-4 py-2 cursor-pointer">{{ $t('feature2') }}</li>
           <li
             class="hover:bg-gray-100 px-4 py-2 cursor-pointer text-red-500"
             @click="logout"
           >
-            登出
+            {{ $t('logout') }}
           </li>
         </ul>
       </div>
@@ -54,7 +54,7 @@ const toggleDropdown = () => {
 
 const logout = async () => {
   await userStore.logout()
-  router.push('/') // 登出後回首頁，自動重新渲染狀態
+  router.push('/') // {{ $t('logout') }}後回首頁，自動重新渲染狀態
 }
 
 const goToOtherPage = () => {
