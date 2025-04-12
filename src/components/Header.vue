@@ -8,22 +8,40 @@
     <!-- 標題 -->
     <h1 class="text-lg font-semibold">My App</h1>
 
-    <!-- 右側用戶頭像按鈕（跳轉到管理頁面 /manage） -->
-    <button @click="handleClick" class="p-2 rounded-full hover:bg-gray-200">
-      <img src="https://i.pravatar.cc/40" alt="User Avatar" class="w-10 h-10 rounded-full">
-    </button>
+    <!-- 右側功能 -->
+    <div>
+      <button
+        v-if="!userStore.user"
+        @click="handleClick"
+        class="bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        使用 Google 登入
+      </button>
+      <UserMenu v-else />
+    </div>
   </header>
 </template>
 
-<script>
-export default {
-  props: {
-    toggleSidebar: Function,
-  },
-  methods: {
-    handleClick() {
-      this.$router.push("/manage"); // 跳轉到 /manage
-    },
-  },
-};
+<script setup>
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+import { auth, provider, signInWithPopup } from '@/firebase'
+import UserMenu from './UserMenu.vue'
+
+defineProps({
+  toggleSidebar: Function
+})
+
+const userStore = useUserStore()
+const router = useRouter()
+
+const handleClick = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider)
+    userStore.user = result.user
+    // 不跳轉也可，或保留 router.push('/') 視需求
+  } catch (error) {
+    console.error('登入失敗', error)
+  }
+}
 </script>

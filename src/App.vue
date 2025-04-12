@@ -5,7 +5,17 @@
 </template>
 
 <script>
+import { onMounted } from 'vue'
+import { useUserStore } from '@/stores/user'
+
 export default {
-  name: "App",
-};
+  name: 'App',
+  setup() {
+    const userStore = useUserStore()
+
+    onMounted(() => {
+      userStore.init()
+    })
+  }
+}
 </script>
