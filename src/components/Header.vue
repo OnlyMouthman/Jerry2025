@@ -9,7 +9,7 @@
     <h1 class="text-lg font-semibold">My App</h1>
 
     <!-- 右側用戶頭像按鈕（跳轉到管理頁面 /manage） -->
-    <button @click="goToManagePage" class="p-2 rounded-full hover:bg-gray-200">
+    <button @click="handleClick" class="p-2 rounded-full hover:bg-gray-200">
       <img src="https://i.pravatar.cc/40" alt="User Avatar" class="w-10 h-10 rounded-full">
     </button>
   </header>
@@ -21,7 +21,7 @@ export default {
     toggleSidebar: Function,
   },
   methods: {
-    goToManagePage() {
+    handleClick() {
       this.$router.push("/manage"); // 跳轉到 /manage
     },
   },
