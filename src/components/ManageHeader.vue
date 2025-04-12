@@ -13,27 +13,12 @@
   </header>
 </template>
 
-<script>
+<script setup>
+defineProps(["toggleSidebar"])
+const user = ref(null)
+
+import { ref, defineProps } from 'vue'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import UserMenu from './UserMenu.vue'
 
-export default {
-  components: {
-    UserMenu
-  },
-  props: {
-    toggleSidebar: Function,
-  },
-  data() {
-    return {
-      user: null
-    }
-  },
-  mounted() {
-    const auth = getAuth()
-    onAuthStateChanged(auth, (u) => {
-      this.user = u
-    })
-  },
-}
-</script>
+
