@@ -1,24 +1,20 @@
 <template>
   <BaseLayout>
-    <main class="flex items-center justify-center h-full">
-      <!-- 左側 -->
-      <aside class="hidden md:flex md:w-1/4 lg:w-1/5 bg-gray-200 p-4 h-full">
-        <p>左側內容</p>
-      </aside>
+    <template #left>
+      <p>左側內容</p>
+    </template>
 
-      <!-- 中間 -->
-      <section class="flex-1 bg-white p-4 h-full">
-        <p>中間主要內容</p>
-      </section>
+    <template #center>
+      <MapView />
+    </template>
 
-      <!-- 右側 -->
-      <aside class="hidden md:flex md:w-1/4 lg:w-1/5 bg-gray-200 p-4 h-full">
-        <p>右側內容</p>
-      </aside>
-    </main>
+    <template #right>
+      <p>右側內容</p>
+    </template>
   </BaseLayout>
 </template>
 
 <script setup>
 import BaseLayout from '@/layouts/BaseLayout.vue'
+import MapView from '@/components/MapView.vue'
 </script>
