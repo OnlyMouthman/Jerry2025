@@ -26,6 +26,7 @@
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { auth, provider, signInWithPopup } from '@/firebase'
+import { syncUserToFirestore, buildUserProfile } from '@/api/user'  // ✅ 引用共用API
 import UserMenu from './UserMenu.vue'
 
 defineProps({
@@ -38,8 +39,12 @@ const router = useRouter()
 const handleClick = async () => {
   try {
     const result = await signInWithPopup(auth, provider)
-    userStore.user = result.user
-    // 不跳轉也可，或保留 router.push('/') 視需求
+    const user = result.user
+
+    await syncUserToFirestore(user) // ✅ 使用共用API
+    const fullProfile = await buildUserProfile(user) // 🔥 取得完整使用者資料
+    userStore.user = fullProfile // 🔥 寫進 userStore
+    userStore.user = user
   } catch (error) {
     console.error('登入失敗', error)
   }

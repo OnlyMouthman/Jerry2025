@@ -25,3 +25,4 @@ dist-ssr
 
 firebase.cache
 hosting.*.cache
+src/firebase.js

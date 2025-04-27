@@ -4,18 +4,13 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 
-export default {
-  name: 'App',
-  setup() {
-    const userStore = useUserStore()
+const userStore = useUserStore()
 
-    onMounted(() => {
-      userStore.init()
-    })
-  }
-}
+onMounted(() => {
+  userStore.init()
+})
 </script>

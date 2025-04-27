@@ -7,7 +7,13 @@
       @showLang="openLangModal"
     />
     <LanguageModal ref="langModal" />
-
+    <!-- 🔳 黑色遮罩 -->
+    <div
+      v-if="isSidebarOpen"
+      class="fixed inset-0 bg-black/50 z-30"
+      @click="isSidebarOpen = false"
+    ></div>
+    
     <main class="pt-14 flex items-center justify-center flex-1">
         <!-- 左側區塊 -->
         <aside class="hidden md:flex md:w-1/3 lg:w-1/5 bg-gray-200 p-4 h-full">
