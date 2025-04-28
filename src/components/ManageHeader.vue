@@ -9,7 +9,7 @@
     <h1 class="text-lg font-semibold">{{ $t('appTitle') }}</h1>
 
     <!-- 使用者功能選單 -->
-    <UserMenu v-if="userStore.user" />
+    <UserMenu v-if="userStore.uid" />
   </header>
 </template>
 

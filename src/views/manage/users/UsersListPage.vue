@@ -53,7 +53,7 @@
               <label class="block text-gray-700 text-sm font-medium mb-1">選擇身分</label>
               <select v-model="selectedRole" class="border rounded w-full p-2">
                 <option disabled value="">請選擇身分</option>
-                <option v-for="role in roles" :key="role.id" :value="role.key">
+                <option v-for="role in roles" :key="role.id" :value="role.id">
                   {{ role.name }}
                 </option>
               </select>
@@ -140,8 +140,8 @@ const saveUserRole = async () => {
     loading.value = false
   }
 }
-const getRoleName = (roleKey) => {
-  const role = roles.value.find(r => r.key === roleKey)
+const getRoleName = (roleId) => {
+  const role = roles.value.find(r => r.id === roleId)
   return role ? role.name : '(未知角色)'
 }
 const toastMessage = ref('')

@@ -10,11 +10,7 @@
 
     <!-- 右側功能 -->
     <div>
-      <button
-        v-if="!userStore.user"
-        @click="handleClick"
-        class="bg-blue-500 text-white px-4 py-2 rounded"
-      >
+      <button v-if="!userStore.uid" @click="handleClick" class="bg-blue-500 text-white px-4 py-2 rounded">
         {{ $t('login') }}
       </button>
       <UserMenu v-else />
@@ -26,7 +22,7 @@
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { auth, provider, signInWithPopup } from '@/firebase'
-import { syncUserToFirestore, buildUserProfile } from '@/api/user'  // ✅ 引用共用API
+import { syncUserToFirestore, buildUserProfile } from '@/api/user'
 import UserMenu from './UserMenu.vue'
 
 defineProps({
@@ -41,10 +37,21 @@ const handleClick = async () => {
     const result = await signInWithPopup(auth, provider)
     const user = result.user
 
-    await syncUserToFirestore(user) // ✅ 使用共用API
-    const fullProfile = await buildUserProfile(user) // 🔥 取得完整使用者資料
-    userStore.user = fullProfile // 🔥 寫進 userStore
-    userStore.user = user
+    // 1. 同步基本資料到 Firestore
+    await syncUserToFirestore(user)
+
+    // 2. 取得完整使用者資料（包含 role 和 permissions）
+    const fullProfile = await buildUserProfile(user)
+
+    // 3. 正確存到 userStore
+    userStore.setUser({
+      uid: user.uid,
+      name: fullProfile.name,
+      email: fullProfile.email,
+      role: fullProfile.role,
+      permissions: fullProfile.permissions || []
+    })
+
   } catch (error) {
     console.error('登入失敗', error)
   }
