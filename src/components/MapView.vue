@@ -1,24 +1,39 @@
 <template>
-    <div ref="mapContainer" class="w-full h-full"></div>
+  <div id="map" class="w-full h-full"></div>
 </template>
+
 <script setup>
-import { onMounted, ref } from 'vue'
-import { loadArcGIS } from '@/utils/loadArcGIS'
+import { onMounted, onBeforeUnmount } from 'vue'
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
 
-const mapContainer = ref(null)
+let map = null
 
-onMounted(async () => {
-  await loadArcGIS()
+onMounted(() => {
+  // 初始化地圖
+  map = L.map('map').setView([23.6978, 120.9605], 8)  // 台灣中心點
 
-  require(['esri/Map', 'esri/views/MapView'], (Map, MapView) => {
-    const map = new Map({ basemap: 'topo-vector' })
-    new MapView({
-      container: mapContainer.value,
-      map: map,
-      center: [120.9842, 24.8039],
-      zoom: 7
-    })
+  // 加入 OpenStreetMap 底圖
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map)
+
+  // 範例：加入一個 Marker（台北101）
+  const marker = L.marker([25.033964, 121.564468]).addTo(map)
+  marker.bindPopup('<b>台北 101</b><br>範例標記').openPopup()
+
+  // 範例：點擊地圖事件
+  map.on('click', (e) => {
+    console.log(`點擊位置：${e.latlng.lat}, ${e.latlng.lng}`)
+    L.marker([e.latlng.lat, e.latlng.lng]).addTo(map)
+      .bindPopup('你剛剛點了這裡！').openPopup()
   })
+})
+
+onBeforeUnmount(() => {
+  if (map) {
+    map.remove()
+  }
 })
 </script>
 

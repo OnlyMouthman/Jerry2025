@@ -1,22 +1,25 @@
 <template>
-    <ManageBaseLayout>
-      <template #left>
-        <!-- 左側內容（可留空） -->
-      </template>
-  
-      <template #center>
-        <div class="p-4">
-          <h1 class="text-2xl font-bold mb-4">地圖設定</h1>
-          <p class="text-gray-600">這裡是地圖設定頁面。</p>
-        </div>
-      </template>
-  
-      <template #right>
-        <!-- 右側內容（可留空） -->
-      </template>
-    </ManageBaseLayout>
-  </template>
-  
-  <script setup>
-  import ManageBaseLayout from '@/layouts/ManageBaseLayout.vue'
-  </script>
+  <ManageBaseLayout>
+    <template #left>
+      <ProjectSidebar @open-dialog="isDialogOpen = true" />
+    </template>
+
+    <template #center>
+      <MapView />
+    </template>
+
+    <template #right>
+      <!-- 右側內容 -->
+    </template>
+  </ManageBaseLayout>
+
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import ManageBaseLayout from '@/layouts/ManageBaseLayout.vue'
+import MapView from '@/components/MapView.vue'
+import ProjectSidebar from '@/components/ProjectSidebar.vue'  // ⬅️ 引入新元件
+
+
+</script>
