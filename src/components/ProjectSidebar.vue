@@ -31,7 +31,7 @@
                                 <i class="material-icons text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                                     @click.stop="editProject(project)">edit</i>
                                 <i class="material-icons text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
-                                    @click.stop="editProject(project)">delete</i>
+                                    @click.stop="openDeleteDialog(project)">delete</i>
                             </div>
                             
                         </button>
@@ -48,7 +48,7 @@
                             </span>
                             <div class="flex items-center">
                                 <i class="material-icons text-gray-400 text-sm mr-2 cursor-pointer" @click.stop="editSubProject(sub)">edit</i>
-                                <i class="material-icons text-gray-400 text-sm mr-2 cursor-pointer" @click.stop="editSubProject(sub)">delete</i>
+                                <i class="material-icons text-gray-400 text-sm mr-2 cursor-pointer" @click.stop="openDeleteSubDialog(sub)">delete</i>
                                 <i class="material-icons text-gray-400 text-sm cursor-pointer">{{ sub.expanded ? 'expand_less' : 'expand_more' }}</i>
                             </div>
                         </button>
@@ -89,13 +89,36 @@
             </div>
         </div>
     </div>
+
+    <!-- 確認刪除 Dialog -->
+    <div v-if="isDeleteDialogOpen" class="fixed inset-0 bg-black/30 flex items-center justify-center z-[9999]">
+        <div class="bg-white p-6 rounded-xl w-80 shadow-2xl animate-fadeIn">
+            <h2 class="text-xl font-bold mb-4 text-center">確定刪除專案</h2>
+            <p class="text-center">你確定要刪除此專案嗎？此操作不可恢復。</p>
+            <div class="flex justify-end space-x-2 mt-4">
+                <button @click="isDeleteDialogOpen = false" class="px-4 py-2 text-gray-600 border rounded-lg hover:border-gray-500">取消</button>
+                <button @click="deleteProject" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">刪除</button>
+            </div>
+        </div>
+    </div>
+    <!-- 確認刪除 Dialog -->
+    <div v-if="isDeleteSubDialogOpen" class="fixed inset-0 bg-black/30 flex items-center justify-center z-[9999]">
+        <div class="bg-white p-6 rounded-xl w-80 shadow-2xl animate-fadeIn">
+            <h2 class="text-xl font-bold mb-4 text-center">確定刪除子專案</h2>
+            <p class="text-center">你確定要刪除此子專案嗎？此操作不可恢復。</p>
+            <div class="flex justify-end space-x-2 mt-4">
+                <button @click="isDeleteSubDialogOpen = false" class="px-4 py-2 text-gray-600 border rounded-lg hover:border-gray-500">取消</button>
+                <button @click="deleteSubProject" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">刪除</button>
+            </div>
+        </div>
+    </div>
 </template>
 
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { getProjects, createProject } from '@/api/project'
-import { getSubProjects, getFeatures, createSubProject  } from '@/api/subproject'
+import { getProjects, createProject, deleteProjectAPI } from '@/api/project'
+import { getSubProjects, getFeatures, createSubProject, deleteSubProjectAPI  } from '@/api/subproject'
 const isDialogOpen = ref(false);
 const newProjectName = ref('');
 const isDetailMode = ref(false);
@@ -105,7 +128,38 @@ const subProjects = ref([]);
 const selectedProject = ref(null);
 const openSubProjectDialog = ref(false);
 const newSubProjectName = ref('');
+const isDeleteDialogOpen = ref(false);  // 控制刪除確認 Dialog
+const projectToDelete = ref(null);  // 被選擇刪除的專案
+const isDeleteSubDialogOpen = ref(false);
+const subProjectToDelete = ref(null);
 
+const openDeleteDialog = (project) => {
+    projectToDelete.value = project;
+    isDeleteDialogOpen.value = true;
+};
+
+const deleteProject = async () => {
+    if (projectToDelete.value) {
+        // 使用 API 刪除專案
+        await deleteProjectAPI(projectToDelete.value.id);
+        
+        // 刪除後更新專案列表
+        projects.value = await getProjects(); // 重新載入專案資料
+        isDeleteDialogOpen.value = false;  // 關閉 Dialog
+    }
+};
+const openDeleteSubDialog = (sub) => {
+    subProjectToDelete.value = sub;
+    isDeleteSubDialogOpen.value = true;
+};
+
+const deleteSubProject = async () => {
+    if (subProjectToDelete.value) {
+        await deleteSubProjectAPI(selectedProject.value.id, subProjectToDelete.value.id);
+        subProjects.value = await getSubProjects(selectedProject.value.id); // 重新載入
+        isDeleteSubDialogOpen.value = false;
+    }
+};
 
 const backToProjectList = () => {
     isDetailMode.value = false;
