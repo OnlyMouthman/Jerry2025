@@ -50,9 +50,9 @@
                     </table>
                 </div>
 
-                <!-- 簡單版 Toast 提示 -->
+                <!-- Toast 提示 -->
                 <div v-if="toastMessage"
-                    class="fixed bottom-6 right-6 bg-black/80 text-white text-base px-6 py-3 rounded-xl shadow-xl animate-fadeIn z-50">
+                    class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded shadow-xl z-[99999] animate-fadeIn">
                     {{ toastMessage }}
                 </div>
 
