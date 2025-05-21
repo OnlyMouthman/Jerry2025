@@ -34,7 +34,6 @@
                                 <i class="material-icons text-gray-400 text-sm mr-2 cursor-pointer"
                                     @click.stop="openDeleteDialog(project)">delete</i>
                             </div>
-
                         </button>
                     </li>
                 </template>
@@ -65,19 +64,21 @@
                             </li>
 
                             <!-- 現有圖徵列表 -->
-                            <li v-for="feature in sub.features" :key="feature.id"
-                                class="flex items-center justify-between hover:bg-gray-300 transition-colors duration-200 cursor-pointer px-2 py-1 rounded">
-                                <div class="flex items-center">
-                                    <i class="material-icons text-gray-400 text-xs mr-2">{{ getFeatureIcon(feature.type)
-                                    }}</i>
-                                    <span>{{ feature.name }}</span>
-                                </div>
-                                <div class="flex space-x-1">
-                                    <i class="material-icons text-sm text-gray-400 cursor-pointer"
-                                        @click.stop="openEditFeatureDialog(feature)">edit</i>
-                                    <i class="material-icons text-sm text-gray-400 cursor-pointer"
-                                        @click.stop="confirmDeleteFeature(feature)">delete</i>
-                                </div>
+                            <li v-for="feature in sub.features" :key="feature.id" >
+                                <button @click="toggleFeature(feature)"
+                                    class="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-300 transition-colors duration-200 flex justify-between items-center cursor-pointer">
+                                    <div class="flex items-center">
+                                        <i class="material-icons text-gray-400 text-xs mr-2">{{ getFeatureIcon(feature.type)
+                                        }}</i>
+                                        <span>{{ feature.name }}</span>
+                                    </div>
+                                    <div class="flex space-x-1">
+                                        <i class="material-icons text-sm text-gray-400 cursor-pointer"
+                                            @click.stop="openEditFeatureDialog(feature)">edit</i>
+                                        <i class="material-icons text-sm text-gray-400 cursor-pointer"
+                                            @click.stop="confirmDeleteFeature(feature)">delete</i>
+                                    </div>
+                                </button>
                             </li>
                         </ul>
                     </li>
@@ -236,6 +237,7 @@ import { ref, onMounted } from 'vue';
 import { getProjects, createProject, deleteProjectAPI, updateProjectAPI } from '@/api/project'
 import { getSubProjects, createSubProject, deleteSubProjectAPI, updateSubProjectAPI } from '@/api/subproject'
 import { createFeature, getFeatures, updateFeature, deleteFeature } from '@/api/feature'
+import { useProjectStore } from '@/stores/projectStore' 
 // Toast
 const toastMessage = ref('')
 const showToast = (message) => {
@@ -246,6 +248,7 @@ const showToast = (message) => {
 }
 
 // State
+const projectStore = useProjectStore()
 const isDialogOpen = ref(false);
 const newProjectName = ref('');
 const isDetailMode = ref(false);
@@ -268,6 +271,7 @@ const editFeatureDialogVisible = ref(false)
 const featureToEdit = ref(null)
 const deleteFeatureDialogVisible = ref(false)
 const featureToDelete = ref(null)
+
 const newFeature = ref({
     name: '',
     type: 'point'
@@ -402,6 +406,7 @@ const backToProjectList = () => {
     isDetailMode.value = false;
     selectedProject.value = null;
     subProjects.value = [];
+    projectStore.clearDate()
 };
 
 const toggleSubProject = async (sub) => {
@@ -409,6 +414,11 @@ const toggleSubProject = async (sub) => {
     if (sub.expanded && sub.features.length === 0) {
         sub.features = await getFeatures(sub.id)
     }
+    projectStore.setSubProject(sub)
+}
+
+const toggleFeature = async (feature) => {
+    projectStore.setFeature(feature)
 }
 
 const getFeatureIcon = (type) => {
@@ -427,6 +437,8 @@ const enterDetailMode = async (project) => {
         expanded: false,
         features: []
     }))
+    //紀錄 點了哪個project
+    projectStore.setProject(project)
 }
 
 // 編輯

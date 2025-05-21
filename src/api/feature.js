@@ -14,9 +14,14 @@ export const getFeatures = async (subProjectId) => {
 }
 
 // 更新 feature
-export const updateFeature = async (id, data) => {
-  await updateDoc(doc(db, 'features', id), data)
+export const updateFeature = async (id, { name, type, geometry }) => {
+  await updateDoc(doc(db, 'features', id), {
+    ...(name && { name }),
+    ...(type && { type }),
+    ...(geometry && { geometry: JSON.stringify(geometry) })
+  })
 }
+
 
 // 刪除 feature
 export const deleteFeature = async (id) => {

@@ -1,7 +1,7 @@
 <template>
   <ManageBaseLayout>
     <template #left>
-      <ProjectSidebar @open-dialog="isDialogOpen = true" />
+      <LeftControlPanel @open-dialog="isDialogOpen = true" />
     </template>
 
     <template #center>
@@ -9,7 +9,7 @@
     </template>
 
     <template #right>
-      <!-- 右側內容 -->
+      <RightControlPanel />
     </template>
   </ManageBaseLayout>
 
@@ -19,7 +19,7 @@
 import { ref } from 'vue'
 import ManageBaseLayout from '@/layouts/ManageBaseLayout.vue'
 import MapView from '@/components/MapView.vue'
-import ProjectSidebar from '@/components/ProjectSidebar.vue'  // ⬅️ 引入新元件
-
+import LeftControlPanel from '@/components/LeftControlPanel.vue' 
+import RightControlPanel from '@/components/RightControlPanel.vue'
 
 </script>
